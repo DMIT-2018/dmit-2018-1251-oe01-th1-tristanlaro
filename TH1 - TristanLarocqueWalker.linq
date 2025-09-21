@@ -25,3 +25,12 @@ Activity = x.Name
 .OrderBy(x => x.StartDate)
 .Dump();
 // Question 2
+//Question 3
+Students.Where(x => x.StudentPayments.Count == 0 && x.CountryCode != "CA")
+.OrderBy(x => x.LastName)
+.Select(x => new { 
+	StudentNumber = x.StudentNumber,
+	CountryName = x.Countries.CountryName,
+	FullName = x.FirstName + " " + x.LastName
+})
+.Dump();
