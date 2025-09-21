@@ -25,6 +25,7 @@ Activity = x.Name
 .OrderBy(x => x.StartDate)
 .Dump();
 // Question 2
+
 //Question 3
 Students.Where(x => x.StudentPayments.Count == 0 && x.CountryCode != "CA")
 .OrderBy(x => x.LastName)
@@ -33,4 +34,23 @@ Students.Where(x => x.StudentPayments.Count == 0 && x.CountryCode != "CA")
 	CountryName = x.Countries.CountryName,
 	FullName = x.FirstName + " " + x.LastName
 })
+.Dump();
+//Question 4
+Employees.Where(x => x.PositionID == 4 && x.ReleaseDate.Value == null )
+.OrderByDescending(x => x.ClassOfferings )
+.ThenBy(x =>x.LastName )
+.Select(x => new {
+	ProgramName = x.Program.ProgramName,
+	Fullname = x.FirstName + " " + x.LastName
+}).Dump();
+// Question 5
+Clubs.Select(x => new {
+Supervisor = x.Employee == null ? "unknown":
+					x.Employee.FirstName + " " + x.Employee.LastName,
+ Club = x.ClubName,
+ MemberCount = x.ClubMembers.Count(),
+ Activites = x.ClubActivities.Count() == 0 ? "None Scheduled":
+ 				x.ClubActivities.Count().ToString(),
+})
+.OrderByDescending(x => x.MemberCount)
 .Dump();
