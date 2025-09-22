@@ -25,14 +25,22 @@ Activity = x.Name
 .OrderBy(x => x.StartDate)
 .Dump();
 // Question 2
-ProgramCourses.Where(x => x.Required)
+ProgramCourses
+.GroupBy(x => new
+{
+	x.Program.ProgramName, x.Program.SchoolCode,
+} )
+.Where(x => x.Count(x => x.Required) >= 22)
 .Select(x => new{
-School = x.Program.SchoolCode == "SAMIT" ? "School of Advance Media and IT":
-				x.Program.SchoolCode == "SEET" ? "School of Electrical Engineering Technology":
+School = x.Key.SchoolCode == "SAMIT" ? "School of Advance Media and IT":
+				x.Key.SchoolCode == "SEET" ? "School of Electrical Engineering Technology":
 				"unknown",
-Program = x.Program.ProgramName
+Program = x.Key.ProgramName,
+RequiredCourseCount = x.Count(x => x.Required),
+OptionalCourseCount = x.Count(x => x.Required == false)
 
 })
+.OrderBy(x => x.Program)
 .Dump();
 //Question 3
 Students.Where(x => x.StudentPayments.Count == 0 && x.CountryCode != "CA")
