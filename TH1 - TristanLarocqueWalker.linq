@@ -25,7 +25,15 @@ Activity = x.Name
 .OrderBy(x => x.StartDate)
 .Dump();
 // Question 2
+ProgramCourses.Where(x => x.Required)
+.Select(x => new{
+School = x.Program.SchoolCode == "SAMIT" ? "School of Advance Media and IT":
+				x.Program.SchoolCode == "SEET" ? "School of Electrical Engineering Technology":
+				"unknown",
+Program = x.Program.ProgramName
 
+})
+.Dump();
 //Question 3
 Students.Where(x => x.StudentPayments.Count == 0 && x.CountryCode != "CA")
 .OrderBy(x => x.LastName)
@@ -36,12 +44,16 @@ Students.Where(x => x.StudentPayments.Count == 0 && x.CountryCode != "CA")
 })
 .Dump();
 //Question 4
-Employees.Where(x => x.PositionID == 4 && x.ReleaseDate.Value == null )
-.OrderByDescending(x => x.ClassOfferings )
+Employees.Where(x => x.PositionID == 4 && x.ReleaseDate.Value == null && x.ClassOfferings.Any( )  )
+.OrderByDescending(x => x.ClassOfferings.Count() )
 .ThenBy(x =>x.LastName )
 .Select(x => new {
 	ProgramName = x.Program.ProgramName,
-	Fullname = x.FirstName + " " + x.LastName
+	Fullname = x.FirstName + " " + x.LastName,
+	WorkLoad = x.ClassOfferings.Count() > 24 ? "High":
+					 x.ClassOfferings.Count() > 8 ? "Med":
+					 "Low"
+					
 }).Dump();
 // Question 5
 Clubs.Select(x => new {
